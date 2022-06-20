@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socket_chat/deneme/chat_view.dart';
+import 'package:socket_chat/views/register/register_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ChatView(),
+      home: RegisterView(),
     );
   }
 }
