@@ -4,6 +4,7 @@ import 'package:socket_chat/shared/socket_chat_logo_title.dart';
 import 'package:socket_chat/views/login/login_view.dart';
 import 'package:socket_chat/views/register/register_view_model.dart';
 
+import '../../shared/custom_alert_message.dart';
 import '../../shared/custom_button.dart';
 import '../../shared/custom_text_form_field.dart';
 
@@ -95,14 +96,27 @@ class RegisterView extends StatelessWidget with RegisterViewModel {
             ),
             const SizedBox(height: 30),
             CustomElevatedButton(
-              onTap: () {
-                socketService.connect();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginView(),
-                    ));
-              },
+              onTap: authService.isLoadingAuth
+                  ? null
+                  : () async {
+                      final response = await authService.register(
+                        nameController.text.trim(),
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                      print(response);
+
+                      if (response == true) {
+                        socketService.connect();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginView(),
+                            ));
+                      } else {
+                        showAlert(context, 'Registration Failed', response);
+                      }
+                    },
               title: 'Create a New User',
               isHaveIcon: false,
               iconData: Icons.create,

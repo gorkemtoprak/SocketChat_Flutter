@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_chat/services/auth_service.dart';
 import 'package:socket_chat/services/socket_services.dart';
 
 class RegisterViewModel {
@@ -7,4 +8,5 @@ class RegisterViewModel {
   final emailController = TextEditingController();
 
   final SocketService socketService = SocketService();
+  final AuthService authService = AuthService();
 }
