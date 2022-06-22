@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:socket_chat/views/home/home_view.dart';
 import 'package:socket_chat/views/login/login_view_model.dart';
 
 import '../../core/utils/constants.dart';
 import '../../shared/custom_button.dart';
 import '../../shared/custom_text_form_field.dart';
 import '../../shared/socket_chat_logo_title.dart';
+import '../chat/chat_view.dart';
 
 class LoginView extends StatelessWidget with LoginViewModel {
   LoginView({Key? key}) : super(key: key);
@@ -64,7 +64,7 @@ class LoginView extends StatelessWidget with LoginViewModel {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const HomeView(),
+                      builder: (context) => const ChatView(),
                     ));
               },
               title: 'Login',

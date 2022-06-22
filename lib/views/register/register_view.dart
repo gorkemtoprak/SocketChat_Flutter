@@ -99,6 +99,11 @@ class RegisterView extends StatelessWidget with RegisterViewModel {
               onTap: authService.isLoadingAuth
                   ? null
                   : () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginView(),
+                          ));
                       final response = await authService.register(
                         nameController.text.trim(),
                         emailController.text.trim(),
