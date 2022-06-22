@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_chat/views/chat/chat_view.dart';
 
-import 'services/auth_service.dart';
-import 'services/chat_service.dart';
-import 'services/socket_services.dart';
+import 'core/init/provider/provider_list.dart';
+import 'core/init/provider/theme_notifier.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [...ApplicationProvider.instance!.dependItems],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,20 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthService()),
-        ChangeNotifierProvider(create: (_) => SocketService()),
-        ChangeNotifierProvider(create: (_) => ChatService()),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const ChatView(),
-      ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: Provider.of<ThemeNotifier>(context).currentTheme,
+      home: const ChatView(),
     );
   }
 }
