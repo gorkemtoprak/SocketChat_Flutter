@@ -19,22 +19,22 @@ class SocketService extends ChangeNotifier {
   void connect() async {
     final token = await AuthService.getToken();
 
-    _socket = IO.io(
-        Platform.isAndroid ? 'http://10.0.2.2:3000' : 'http://localhost:3000', {
-      'transports': ['websocket'],
-      'autoConnect': true,
-      'forceNew': true,
-      'extraHeaders': {'x-token': token},
-    });
+    // _socket = IO.io(
+    //     Platform.isAndroid ? 'http://10.0.2.2:3000' : 'http://localhost:3000', {
+    //   'transports': ['websocket'],
+    //   'autoConnect': true,
+    //   'forceNew': true,
+    //   'extraHeaders': {'x-token': token},
+    // });
 
     // You can also use this
-    // _socket = IO.io(
-    //   'http://localhost:3000',
-    //   IO.OptionBuilder()
-    //       .setTransports(['websocket'])
-    //       .enableAutoConnect()
-    //       .build(),
-    // );
+    _socket = IO.io(
+      'http://localhost:3000',
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .enableAutoConnect()
+          .build(),
+    );
 
     _socket.onConnect((_) {
       _status = Status.online;

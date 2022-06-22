@@ -19,9 +19,10 @@ class MessageWidget extends StatelessWidget {
     // final authService = Provider.of<AuthService>(context, listen: false);
     return Container(
       // child: id == authService.user.uid
-      //     ? myMessage(text ?? '')
-      //     : othersMessage(text ?? ''),
-      child: othersMessage(text ?? ''),
+      child: id == 'Mfgg7I1SzbQQBsqwPo6kmVM055y2'
+          ? myMessage(text ?? '')
+          : othersMessage(text ?? ''),
+      // child: othersMessage(text ?? ''),
     );
   }
 }

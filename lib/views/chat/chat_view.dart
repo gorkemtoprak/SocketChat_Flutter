@@ -79,10 +79,16 @@ class _ChatViewState extends State<ChatView> {
         padding: customPadding(),
         child: Column(
           children: [
-            const Expanded(
-              child: MessageWidget(
-                text: 'deneme deneme deneme 123',
-                id: 'uuuu',
+            Expanded(
+              child: ListView.builder(
+                itemCount: _messages.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return MessageWidget(
+                    text: _messages[index].text,
+                    id: 'Mfgg7I1SzbQQBsqwPo6kmVM055y2',
+                  );
+                },
               ),
             ),
             const SizedBox(
@@ -95,11 +101,11 @@ class _ChatViewState extends State<ChatView> {
                   child: Form(
                     key: formKey,
                     child: TextFormField(
-                      onSaved: (dynamic value) {
-                        _textController.text = value;
+                      onSaved: (value) {
+                        _textController.text = value ?? '';
                       },
                       controller: _textController,
-                      cursorColor: Constants.blue,
+                      cursorColor: Constants.mainColor,
                       minLines: 1,
                       maxLines: 4,
                       decoration: const InputDecoration(
@@ -137,7 +143,7 @@ class _ChatViewState extends State<ChatView> {
                   },
                   icon: const Icon(
                     Icons.send_sharp,
-                    color: Constants.secondaryElement,
+                    color: Constants.mainColor,
                   ),
                 )
               ],
@@ -159,7 +165,7 @@ class _ChatViewState extends State<ChatView> {
 
     final newMessage = MessageWidget(
       // id: authService.user.uid,
-      id: '11221321312',
+      id: 'Mfgg7I1SzbQQBsqwPo6kmVM055y2',
       text: text,
     );
     _messages.insert(0, newMessage);
