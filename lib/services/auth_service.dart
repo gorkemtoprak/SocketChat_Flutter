@@ -42,12 +42,16 @@ class AuthService extends ChangeNotifier {
     isLoadingAuth = true;
 
     final data = {'name': name, 'email': email, 'password': password};
+    print(data);
 
+    //hata burada response da bi sikinti var data falan donuyo sorunsuz fakat su localhost muhabbetinden patliyo
     final response = await http.post(
-        Uri.parse(
-            '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/users'),
-        body: jsonEncode(data),
-        headers: {'Content-Type': 'application/json'});
+      Uri.parse(
+          '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/users'),
+      body: jsonEncode(data),
+      headers: {'Content-Type': 'application/json'},
+    );
+    print(response.body);
 
     isLoadingAuth = false;
 
@@ -60,6 +64,31 @@ class AuthService extends ChangeNotifier {
     } else {
       final respBody = jsonDecode(response.body);
       return respBody['error'];
+    }
+  }
+
+  Future<bool> login(String email, String password) async {
+    isLoadingAuth = true;
+
+    final data = {'email': email, 'password': password};
+    print(data);
+
+    final response = await http.post(
+        Uri.parse(
+            '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/sessions'),
+        body: jsonEncode(data),
+        headers: {'Content-Type': 'application/json'});
+
+    isLoadingAuth = false;
+
+    if (response.statusCode == 200) {
+      final loginResponse = loginResponseFromJson(response.body);
+      user = loginResponse.user;
+
+      await saveToken(loginResponse.token);
+      return true;
+    } else {
+      return false;
     }
   }
 }

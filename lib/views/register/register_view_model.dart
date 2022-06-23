@@ -7,6 +7,12 @@ class RegisterViewModel {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
 
+  // String? name, email, password;
+
   final SocketService socketService = SocketService();
   final AuthService authService = AuthService();
+
+  // createUser() {
+  //   authService.register(name ?? '', email ?? '', password ?? '');
+  // }
 }

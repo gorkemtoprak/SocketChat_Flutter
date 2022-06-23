@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:socket_chat/views/login/login_view_model.dart';
 
 import '../../core/utils/constants.dart';
+import '../../services/auth_service.dart';
+import '../../services/socket_services.dart';
+import '../../shared/custom_alert_message.dart';
 import '../../shared/custom_button.dart';
 import '../../shared/custom_text_form_field.dart';
 import '../../shared/socket_chat_logo_title.dart';
@@ -12,6 +16,8 @@ class LoginView extends StatelessWidget with LoginViewModel {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Scaffold(
       backgroundColor: Constants.bgGreyColor,
       body: Padding(
@@ -59,13 +65,26 @@ class LoginView extends StatelessWidget with LoginViewModel {
             ),
             const SizedBox(height: 30),
             CustomElevatedButton(
-              onTap: () {
+              onTap: () async {
                 // socketService.connect();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ChatView(),
-                    ));
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => const ChatView(),
+                //     ));
+
+                final res = await authService.login(
+                    emailController.text, passwordController.text.trim());
+                if (res) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChatView(),
+                      ));
+                  socketService.connect();
+                } else {
+                  showAlert(context, 'Error', 'Incorrect Email or Password');
+                }
               },
               title: 'Login',
               isHaveIcon: false,

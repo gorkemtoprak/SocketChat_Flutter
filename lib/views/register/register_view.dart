@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:socket_chat/core/utils/constants.dart';
 import 'package:socket_chat/shared/socket_chat_logo_title.dart';
@@ -96,32 +98,30 @@ class RegisterView extends StatelessWidget with RegisterViewModel {
             ),
             const SizedBox(height: 30),
             CustomElevatedButton(
-              onTap: authService.isLoadingAuth
-                  ? null
-                  : () async {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginView(),
-                          ));
-                      final response = await authService.register(
-                        nameController.text.trim(),
-                        emailController.text.trim(),
-                        passwordController.text.trim(),
-                      );
-                      print(response);
+              onTap: () async {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginView(),
+                    ));
+                final response = await authService.register(
+                  nameController.text.trim(),
+                  emailController.text,
+                  passwordController.text,
+                );
+                // print(response);
 
-                      if (response == true) {
-                        socketService.connect();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginView(),
-                            ));
-                      } else {
-                        showAlert(context, 'Registration Failed', response);
-                      }
-                    },
+                if (response == true) {
+                  socketService.connect();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginView(),
+                      ));
+                } else {
+                  showAlert(context, 'Registration Failed', response);
+                }
+              },
               title: 'Create a New User',
               isHaveIcon: false,
               iconData: Icons.create,

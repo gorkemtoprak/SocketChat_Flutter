@@ -26,11 +26,11 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   void initState() {
+    super.initState();
     chatService = Provider.of<ChatService>(context, listen: false);
     socketService = Provider.of<SocketService>(context, listen: false);
     authService = Provider.of<AuthService>(context, listen: false);
     // socketService.socket.on('send-message', listenMessage);
-    super.initState();
   }
 
   void listenMessage(dynamic data) {
@@ -171,8 +171,8 @@ class _ChatViewState extends State<ChatView> {
     _messages.insert(0, newMessage);
 
     // socketService.emit('send-message', {
-    //   'from': authService.user.uid,
-    //   'to': chatService.user!.uid,
+    //   'from': 'Mfgg7I1SzbQQBsqwPo6kmVM055y2',
+    //   'to': '123123123',
     //   'message': text,
     // });
   }
