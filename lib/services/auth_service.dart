@@ -44,7 +44,6 @@ class AuthService extends ChangeNotifier {
     final data = {'name': name, 'email': email, 'password': password};
     print(data);
 
-    //hata burada response da bi sikinti var data falan donuyo sorunsuz fakat su localhost muhabbetinden patliyo
     final response = await http.post(
       Uri.parse(
           '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/users'),
@@ -78,6 +77,7 @@ class AuthService extends ChangeNotifier {
             '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/sessions'),
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json'});
+    print(response);
 
     isLoadingAuth = false;
 

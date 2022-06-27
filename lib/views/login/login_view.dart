@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_chat/views/login/login_view_model.dart';
@@ -72,15 +75,17 @@ class LoginView extends StatelessWidget with LoginViewModel {
                 //     MaterialPageRoute(
                 //       builder: (context) => const ChatView(),
                 //     ));
-
                 final res = await authService.login(
-                    emailController.text, passwordController.text.trim());
+                  emailController.text,
+                  passwordController.text,
+                );
                 if (res) {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const ChatView(),
                       ));
+                  // AutoRouter.of(context).replaceNamed('/chat');
                   socketService.connect();
                 } else {
                   showAlert(context, 'Error', 'Incorrect Email or Password');

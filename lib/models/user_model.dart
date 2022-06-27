@@ -30,18 +30,17 @@ class UserModel {
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      uid: map['uid'],
-      name: map['name'],
-      email: map['email'],
-    );
-  }
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        name: json['name'],
+        email: json['email'],
+        uid: json['uid'],
+      );
 
-  String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source));
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'email': email,
+        'uid': uid,
+      };
 
   @override
   String toString() => 'UserModel(uid: $uid, name: $name, email: $email)';

@@ -1,14 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_chat/core/utils/constants.dart';
 import 'package:socket_chat/shared/socket_chat_logo_title.dart';
-import 'package:socket_chat/views/login/login_view.dart';
 import 'package:socket_chat/views/register/register_view_model.dart';
 
 import '../../shared/custom_alert_message.dart';
 import '../../shared/custom_button.dart';
 import '../../shared/custom_text_form_field.dart';
+import '../login/login_view.dart';
 
 class RegisterView extends StatelessWidget with RegisterViewModel {
   RegisterView({Key? key}) : super(key: key);
@@ -99,17 +100,17 @@ class RegisterView extends StatelessWidget with RegisterViewModel {
             const SizedBox(height: 30),
             CustomElevatedButton(
               onTap: () async {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginView(),
-                    ));
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => LoginView(),
+                //     ));
                 final response = await authService.register(
                   nameController.text.trim(),
                   emailController.text,
                   passwordController.text,
                 );
-                // print(response);
+                print(response);
 
                 if (response == true) {
                   socketService.connect();
@@ -118,6 +119,7 @@ class RegisterView extends StatelessWidget with RegisterViewModel {
                       MaterialPageRoute(
                         builder: (context) => LoginView(),
                       ));
+                  // AutoRouter.of(context).replaceNamed('/login');
                 } else {
                   showAlert(context, 'Registration Failed', response);
                 }
