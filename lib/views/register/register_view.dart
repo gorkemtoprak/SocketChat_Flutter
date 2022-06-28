@@ -132,6 +132,42 @@ class RegisterView extends StatelessWidget with RegisterViewModel {
               height: 40,
               width: screenWidth(context) / 2,
             ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Already have an account? ',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Constants.softBlue,
+                    height: 1.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    // Navigator.pushNamed(context, '/');
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginView(),
+                        ));
+                  },
+                  child: const Text(
+                    'Please Login',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Constants.softBlue,
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_chat/views/login/login_view_model.dart';
+import 'package:socket_chat/views/register/register_view.dart';
 
 import '../../core/utils/constants.dart';
 import '../../services/auth_service.dart';
@@ -98,6 +99,27 @@ class LoginView extends StatelessWidget with LoginViewModel {
               titleColor: Colors.white,
               height: 40,
               width: screenWidth(context) / 3.5,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegisterView(),
+                    ));
+              },
+              child: const Text(
+                'Create a new account',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Constants.softBlue,
+                  height: 1.5,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
