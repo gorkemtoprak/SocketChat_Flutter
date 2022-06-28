@@ -70,12 +70,6 @@ class LoginView extends StatelessWidget with LoginViewModel {
             const SizedBox(height: 30),
             CustomElevatedButton(
               onTap: () async {
-                // socketService.connect();
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const ChatView(),
-                //     ));
                 final res = await authService.login(
                   emailController.text,
                   passwordController.text,

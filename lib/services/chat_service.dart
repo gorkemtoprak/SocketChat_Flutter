@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'auth_service.dart';
 
 class ChatService extends ChangeNotifier {
-  late UserModel? user;
+  late UserModel user;
 
   List<MessageModel> messagesResponseFromJson(String str) =>
       List<MessageModel>.from(

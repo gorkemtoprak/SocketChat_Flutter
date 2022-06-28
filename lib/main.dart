@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:socket_chat/views/register/register_view.dart';
+import 'package:socket_chat/views/login/login_view.dart';
 
 import 'core/init/provider/provider_list.dart';
 import 'core/init/provider/theme_notifier.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeNotifier>(context).currentTheme,
-      home: RegisterView(),
+      home: LoginView(),
     );
   }
 }

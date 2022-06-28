@@ -30,7 +30,7 @@ class _ChatViewState extends State<ChatView> {
     chatService = Provider.of<ChatService>(context, listen: false);
     socketService = Provider.of<SocketService>(context, listen: false);
     authService = Provider.of<AuthService>(context, listen: false);
-    // socketService.socket.on('send-message', listenMessage);
+    socketService.socket.on('send-message', listenMessage);
   }
 
   void listenMessage(dynamic data) {
@@ -45,6 +45,7 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
+    final userTo = chatService.user;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.bgGreyColor,
@@ -53,17 +54,17 @@ class _ChatViewState extends State<ChatView> {
             CircleAvatar(
               backgroundColor: Colors.blue[100],
               maxRadius: 18,
-              child: const Text(
-                'GT',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              child: Text(
+                userTo.name!.substring(0, 2),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(
               height: 3,
             ),
-            const Text(
-              'Gorkem Toprak',
-              style: TextStyle(
+            Text(
+              userTo.name ?? '',
+              style: const TextStyle(
                 color: Constants.blackThree,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -86,7 +87,7 @@ class _ChatViewState extends State<ChatView> {
                 itemBuilder: (BuildContext context, int index) {
                   return MessageWidget(
                     text: _messages[index].text,
-                    id: 'Mfgg7I1SzbQQBsqwPo6kmVM055y2',
+                    id: authService.user.uid,
                   );
                 },
               ),
@@ -164,17 +165,16 @@ class _ChatViewState extends State<ChatView> {
     _focusNode.requestFocus();
 
     final newMessage = MessageWidget(
-      // id: authService.user.uid,
-      id: 'Mfgg7I1SzbQQBsqwPo6kmVM055y2',
+      id: authService.user.uid,
       text: text,
     );
     _messages.insert(0, newMessage);
 
-    // socketService.emit('send-message', {
-    //   'from': 'Mfgg7I1SzbQQBsqwPo6kmVM055y2',
-    //   'to': '123123123',
-    //   'message': text,
-    // });
+    socketService.emit('send-message', {
+      'from': authService.user.uid,
+      'to': chatService.user.uid,
+      'message': text,
+    });
   }
 
   @override
