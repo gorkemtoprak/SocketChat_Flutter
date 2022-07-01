@@ -16,13 +16,11 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final authService = Provider.of<AuthService>(context, listen: false);
+    final authService = Provider.of<AuthService>(context, listen: false);
     return Container(
-      // child: id == authService.user.uid
-      child: id == 'Mfgg7I1SzbQQBsqwPo6kmVM055y2'
+      child: id == authService.user.uid
           ? myMessage(text ?? '')
           : othersMessage(text ?? ''),
-      // child: othersMessage(text ?? ''),
     );
   }
 }

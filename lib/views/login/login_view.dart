@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_chat/views/login/login_view_model.dart';
 import 'package:socket_chat/views/register/register_view.dart';
+import 'package:socket_chat/views/user/user_view.dart';
 
 import '../../core/utils/constants.dart';
 import '../../services/auth_service.dart';
@@ -13,7 +14,6 @@ import '../../shared/custom_alert_message.dart';
 import '../../shared/custom_button.dart';
 import '../../shared/custom_text_form_field.dart';
 import '../../shared/socket_chat_logo_title.dart';
-import '../chat/chat_view.dart';
 
 class LoginView extends StatelessWidget with LoginViewModel {
   LoginView({Key? key}) : super(key: key);
@@ -78,7 +78,7 @@ class LoginView extends StatelessWidget with LoginViewModel {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ChatView(),
+                        builder: (context) => const UserView(),
                       ));
                   // AutoRouter.of(context).replaceNamed('/chat');
                   socketService.connect();

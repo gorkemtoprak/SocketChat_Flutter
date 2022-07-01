@@ -49,13 +49,23 @@ class _ChatViewState extends State<ChatView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.bgGreyColor,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+            size: 24,
+          ),
+        ),
         title: Column(
           children: [
             CircleAvatar(
               backgroundColor: Colors.blue[100],
               maxRadius: 18,
               child: Text(
-                userTo.name!.substring(0, 2),
+                userTo.name!.substring(0, 2).toUpperCase(),
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

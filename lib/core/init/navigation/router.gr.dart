@@ -13,7 +13,7 @@
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:flutter/material.dart' as _i6;
 
-import '../../../deneme/chat_view.dart' as _i3;
+import '../../../views/chat/chat_view.dart' as _i3;
 import '../../../views/loading/loading_view.dart' as _i4;
 import '../../../views/login/login_view.dart' as _i2;
 import '../../../views/register/register_view.dart' as _i1;
