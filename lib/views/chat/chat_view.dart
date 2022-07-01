@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_chat/core/utils/constants.dart';
+import 'package:socket_chat/models/message_model.dart';
 import 'package:socket_chat/views/chat/widgets/message_widget.dart';
 
 import '../../services/auth_service.dart';
@@ -31,6 +32,7 @@ class _ChatViewState extends State<ChatView> {
     socketService = Provider.of<SocketService>(context, listen: false);
     authService = Provider.of<AuthService>(context, listen: false);
     socketService.socket.on('send-message', listenMessage);
+    getChatHistory(chatService.user.uid ?? '');
   }
 
   void listenMessage(dynamic data) {
@@ -41,6 +43,18 @@ class _ChatViewState extends State<ChatView> {
     setState(() {
       _messages.insert(0, message);
     });
+  }
+
+  void getChatHistory(String id) async {
+    List<MessageModel> messages = await chatService.getChat(id);
+    final chatHistory = messages.map(
+      (e) => MessageWidget(
+        text: e.message,
+        id: e.fromMessage,
+      ),
+    );
+    _messages.insertAll(0, chatHistory.toList());
+    print(chatHistory);
   }
 
   @override

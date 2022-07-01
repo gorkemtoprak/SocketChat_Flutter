@@ -26,30 +26,19 @@ class MessageModel {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'message': message,
-      'fromMessage': fromMessage,
-      'toMessage': toMessage,
-      'createdAt': createdAt?.millisecondsSinceEpoch,
-    };
-  }
+  factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
+        fromMessage: json['fromMessage'],
+        toMessage: json['toMessage'],
+        message: json['message'],
+        createdAt: DateTime.parse(json['createdAt']),
+      );
 
-  factory MessageModel.fromMap(Map<String, dynamic> map) {
-    return MessageModel(
-      message: map['message'],
-      fromMessage: map['fromMessage'],
-      toMessage: map['toMessage'],
-      createdAt: map['createdAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'])
-          : null,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory MessageModel.fromJson(String source) =>
-      MessageModel.fromMap(json.decode(source));
+  Map<String, dynamic> toJson() => {
+        'fromMessage': fromMessage,
+        'toMessage': toMessage,
+        'message': message,
+        'createdAt': createdAt!.toIso8601String(),
+      };
 
   @override
   String toString() {
