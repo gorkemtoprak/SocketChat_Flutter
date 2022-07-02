@@ -4,12 +4,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:socket_chat/core/utils/helpers.dart';
 import 'package:socket_chat/models/user_model.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
 
 import '../core/app/base/base_login_response.dart';
 
 class AuthService extends ChangeNotifier {
   final _secureStorage = const FlutterSecureStorage();
+  refresh.RefreshController refreshController =
+      refresh.RefreshController(initialRefresh: true);
+
   late UserModel user;
 
   bool _isLoading = false;
@@ -39,56 +44,64 @@ class AuthService extends ChangeNotifier {
   // }
 
   Future register(String name, String email, String password) async {
-    isLoadingAuth = true;
+    if (await checkInternet()) {
+      isLoadingAuth = true;
 
-    final data = {'name': name, 'email': email, 'password': password};
-    print(data);
+      final data = {'name': name, 'email': email, 'password': password};
+      print(data);
 
-    final response = await http.post(
-      Uri.parse(
-          '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/users'),
-      body: jsonEncode(data),
-      headers: {'Content-Type': 'application/json'},
-    );
-    print(response.body);
+      final response = await http.post(
+        Uri.parse(
+            '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/users'),
+        body: jsonEncode(data),
+        headers: {'Content-Type': 'application/json'},
+      );
+      print(response.body);
 
-    isLoadingAuth = false;
+      isLoadingAuth = false;
+      refreshController.refreshCompleted();
+      if (response.statusCode == 200) {
+        final loginResponse = loginResponseFromJson(response.body);
+        user = loginResponse.user;
 
-    if (response.statusCode == 200) {
-      final loginResponse = loginResponseFromJson(response.body);
-      user = loginResponse.user;
-
-      await saveToken(loginResponse.token);
-      return true;
+        await saveToken(loginResponse.token);
+        return true;
+      } else {
+        final respBody = jsonDecode(response.body);
+        return respBody['error'];
+      }
     } else {
-      final respBody = jsonDecode(response.body);
-      return respBody['error'];
+      refreshController.refreshFailed();
     }
   }
 
-  Future<bool> login(String email, String password) async {
-    isLoadingAuth = true;
+  Future login(String email, String password) async {
+    if (await checkInternet()) {
+      isLoadingAuth = true;
 
-    final data = {'email': email, 'password': password};
-    print(data);
+      final data = {'email': email, 'password': password};
+      print(data);
 
-    final response = await http.post(
-        Uri.parse(
-            '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/sessions'),
-        body: jsonEncode(data),
-        headers: {'Content-Type': 'application/json'});
-    print(response);
+      final response = await http.post(
+          Uri.parse(
+              '${Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api'}/sessions'),
+          body: jsonEncode(data),
+          headers: {'Content-Type': 'application/json'});
+      print(response);
 
-    isLoadingAuth = false;
+      isLoadingAuth = false;
+      refreshController.refreshCompleted();
+      if (response.statusCode == 200) {
+        final loginResponse = loginResponseFromJson(response.body);
+        user = loginResponse.user;
 
-    if (response.statusCode == 200) {
-      final loginResponse = loginResponseFromJson(response.body);
-      user = loginResponse.user;
-
-      await saveToken(loginResponse.token);
-      return true;
+        await saveToken(loginResponse.token);
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      return refreshController.refreshFailed();
     }
   }
 }
